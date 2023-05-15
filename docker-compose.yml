@@ -1,0 +1,20 @@
+version: '2'  # Versi 2 dari Docker Compose yang digunakan 
+
+services:
+  item-app:
+    image: item-app:v1  # Nama dan tag dari image yang akan digunakan untuk service 'item-app:v1'.
+    ports:
+      - 80:8080  # Mapping port host (80) ke port container (8080), sehingga aplikasi dapat diakses melalui port 80 pada host.
+    depends_on:
+      - item-db  # Menentukan bahwa service 'item-app' harus diluncurkan setelah service 'item-db' aktif.
+    restart: always  # Restart container 'item-app' secara otomatis jika terhenti.
+
+  item-db:
+    image: mongo:3  # Nama dan tag dari database image yang akan digunakan untuk service 'item-db'.
+    volumes:
+      - app-db:/data/db  # Menggunakan volume bernama 'app-db' dan menghubungkannya ke path '/data/db' di dalam container.
+    restart: always  # Restart container 'item-db' secara otomatis jika terhenti.
+
+volumes:
+  app-db:  # Mendefinisikan volume bernama 'app-db' yang akan digunakan oleh service 'item-db'.
+
