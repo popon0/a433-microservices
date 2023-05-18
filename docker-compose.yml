@@ -2,7 +2,7 @@ version: '2'  # Versi 2 dari Docker Compose yang digunakan
 
 services:
   item-app:
-    image: item-app:v1  # Nama dan tag dari image yang akan digunakan untuk service 'item-app:v1'.
+    image: ghcr.io/popon0/item-app:v1  # Nama dan tag dari image yang akan digunakan untuk service 'item-app:v1'.
     ports:
       - 80:8080  # Mapping port host (80) ke port container (8080), sehingga aplikasi dapat diakses melalui port 80 pada host.
     depends_on:
