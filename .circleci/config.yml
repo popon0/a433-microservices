@@ -1,0 +1,33 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.16
+
+    steps:
+      - checkout
+
+      # Install Hadolint
+      - run:
+          name: Install Hadolint
+          command: |
+            wget -O hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+            chmod +x hadolint
+            sudo mv hadolint /usr/local/bin/
+
+      # Lint Dockerfile using Hadolint
+      - run:
+          name: Lint Dockerfile
+          command: hadolint Dockerfile
+
+      # Run unit tests for backend
+      - run:
+          name: Run Backend Unit Tests
+          command: go test -v -short --count=1 $(go list ./...)
+
+      # Build and push Docker image
+      - run:
+          name: Build and Push Docker Image
+          command: |
+	     ./build_push_image_karsajobs.sh
