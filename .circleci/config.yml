@@ -29,5 +29,6 @@ jobs:
       # Build and push Docker image
       - run:
           name: Build and Push Docker Image
-          command: |
+          command: | 
+            chmod +x build_push_image_karsajobs.sh
             ./build_push_image_karsajobs.sh
