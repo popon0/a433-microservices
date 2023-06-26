@@ -1,0 +1,38 @@
+version: 2.1
+
+jobs:
+  build-app-karsajobs-ui:
+    docker:
+      - image: circleci/node:14
+
+    steps:
+      - checkout
+
+      # Install Hadolint
+      - run:
+          name: install-hadolint
+          command: |
+            wget -O hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+            chmod +x hadolint
+            sudo mv hadolint /usr/local/bin/
+
+          # Lint Dockerfile using Hadolint
+      - run:
+          name: lint-dockerfile
+          command: hadolint Dockerfile
+
+      # Install Docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      # Install dependencies
+      - run:
+          name: install-depencies
+          command: npm install
+
+      # Build and push Docker image
+      - run:
+          name: build-app-karsajobs-ui
+          command: |
+            chmod +x build_push_image_karsajobs-ui.sh
+            ./build_push_image_karsajobs_ui.sh
