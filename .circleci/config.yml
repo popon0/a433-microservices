@@ -30,4 +30,4 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-	     ./build_push_image_karsajobs.sh
+	  ./build_push_image_karsajobs.sh
