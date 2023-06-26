@@ -8,9 +8,13 @@ jobs:
     steps:
       - checkout
 
+      # Install Docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+
       # Install Hadolint
       - run:
-          name: Install Hadolint
+          name: install-hadolint
           command: |
             wget -O hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
             chmod +x hadolint
@@ -18,17 +22,17 @@ jobs:
 
       # Lint Dockerfile using Hadolint
       - run:
-          name: Lint Dockerfile
+          name: lint-dockerfile
           command: hadolint Dockerfile
 
       # Run unit tests for backend
       - run:
-          name: Run Backend Unit Tests
+          name: test-app
           command: go test -v -short --count=1 $(go list ./...)
 
       # Build and push Docker image
       - run:
-          name: Build and Push Docker Image
-          command: | 
+          name: build-app-karsajobs
+          command: |
             chmod +x build_push_image_karsajobs.sh
             ./build_push_image_karsajobs.sh
