@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service  # Nama Service untuk MongoDB
+spec:
+  selector:
+    app: mongodb  # Selektor untuk memilih pod dengan label "app: mongodb"
+  ports:
+    - protocol: TCP
+      port: 27017  # Port yang akan diexpose oleh Service
+      targetPort: 27017  # Port pada pod yang akan diteruskan lalu lintasnya

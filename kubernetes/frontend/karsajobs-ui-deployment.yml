@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs-ui-deployment  # Nama deployment untuk aplikasi karsajobs-ui
+  labels:
+    app: karsajobs-ui  # Label yang digunakan untuk seleksi deployment
+spec:
+  replicas: 1  # Jumlah replika yang diinginkan
+  selector:
+    matchLabels:
+      app: karsajobs-ui  # Seleksi berdasarkan label app=karsajobs-ui
+  template:
+    metadata:
+      labels:
+        app: karsajobs-ui  # Label yang digunakan dalam pod-template
+    spec:
+      containers:
+        - name: karsajobs-ui  # Nama container
+          image: ghcr.io/popon0/a433-microservices/karsajobs-ui:latest  # Image Docker yang digunakan
+          ports:
+            - containerPort: 80  # Port yang digunakan dalam container
+          env:
+            - name: VUE_APP_API_BASE_URL  # Nama variabel lingkungan
+              value: http://karsajobs-service:8080  # Nilai variabel lingkungan

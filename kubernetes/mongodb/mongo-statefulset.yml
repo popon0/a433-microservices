@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-statefulset  # Nama StatefulSet untuk MongoDB
+spec:
+  serviceName: "mongo-service"  # Nama Service yang digunakan oleh StatefulSet
+  replicas: 1  # Jumlah replika yang akan dibuat
+  selector:
+    matchLabels:
+      app: mongodb  # Selektor untuk memilih pod dengan label "app: mongodb"
+  template:
+    metadata:
+      labels:
+        app: mongodb  # Label yang diberikan pada pod yang dihasilkan
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:4.2.13  # Image Docker yang digunakan untuk kontainer
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: mongo-root-username  # Mengambil nilai dari Secret untuk username root MongoDB
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: mongo-root-password  # Mengambil nilai dari Secret untuk password root MongoDB
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db  # Mount path untuk volume yang akan digunakan
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc  # Nama PersistentVolumeClaim yang akan digunakan untuk menyimpan data MongoDB

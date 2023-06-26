@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs-deployment  # Nama deployment untuk aplikasi karsajobs
+  labels:
+    app: karsajobs  # Label yang digunakan untuk seleksi deployment
+spec:
+  replicas: 1  # Jumlah replika yang diinginkan
+  selector:
+    matchLabels:
+      app: karsajobs  # Seleksi berdasarkan label app=karsajobs
+  template:
+    metadata:
+      labels:
+        app: karsajobs  # Label yang digunakan dalam pod-template
+    spec:
+      containers:
+        - name: karsajobs  # Nama container
+          image: ghcr.io/popon0/a433-microservices/karsajobs:latest  # Image Docker yang digunakan
+          ports:
+            - containerPort: 8080  # Port yang digunakan dalam container
+          env:
+            - name: MONGO_URI  # Nama variabel lingkungan
+              value: mongodb://mongo-service:27017/karsajobs  # Nilai variabel lingkungan

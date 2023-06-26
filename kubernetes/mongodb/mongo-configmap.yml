@@ -1,0 +1,16 @@
+apiVersion: v1  # Versi API yang digunakan adalah v1
+kind: ConfigMap  # Jenis objek ini adalah ConfigMap
+metadata:
+  name: mongo-configmap  # Nama ConfigMap untuk mongo
+data:
+  mongo-init.js: |  # Data yang disimpan dalam ConfigMap dengan key "mongo-init.js"
+    db.createUser({  # Membuat pengguna baru dalam MongoDB
+      user: "admin",  # Nama pengguna
+      pwd: "admin123",  # Kata sandi pengguna
+      roles: [  # Daftar peran pengguna
+        {
+          role: "readWrite",  # Peran yang memiliki akses read dan write
+          db: "karsajobsdb"  # Database yang pengguna dapat akses
+        }
+      ]
+    })
