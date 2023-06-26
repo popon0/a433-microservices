@@ -1,0 +1,6 @@
+#Github Packages
+ghcr.io/popon0/a433-microservices/karsajobs-ui:latest
+ghcr.io/popon0/a433-microservices/karsajobs:latest
+
+#Kubernetes Directory
+https://github.com/popon0/a433-microservices/tree/kubernetes
