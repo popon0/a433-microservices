@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: ghcr.io/popon0/a433-microservices/order-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: AMQP_URL
+              value: amqp://reg:reg@10.108.186.167:5672
