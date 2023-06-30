@@ -1,33 +1,34 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
+apiVersion: networking.istio.io/v1alpha3   # Versi API yang digunakan untuk konfigurasi Istio networking
+kind: Gateway                             # Jenis objek, yaitu Gateway
 metadata:
-  name: order-gateway
+  name: order-gateway                      # Nama gateway, dapat diganti sesuai kebutuhan
 spec:
   selector:
-    istio: ingressgateway
+    istio: ingressgateway                   # Selector untuk memilih istio ingress gateway
   servers:
   - port:
-      number: 80
-      name: http
-      protocol: HTTP
+      number: 80                           # Nomor port yang digunakan, dalam hal ini port 80
+      name: http                            # Nama port, dapat diganti sesuai kebutuhan
+      protocol: HTTP                        # Protokol yang digunakan, dalam hal ini HTTP
     hosts:
-    - "*"
+    - "*"                                 # Host yang diizinkan, dalam hal ini semua host (*)
+
 ---
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3    # Versi API yang digunakan untuk konfigurasi Istio networking
+kind: VirtualService                        # Jenis objek, yaitu VirtualService
 metadata:
-  name: order
+  name: order                               # Nama virtual service, dapat diganti sesuai kebutuhan
 spec:
   hosts:
-  - "*"
+  - "*"                                    # Host yang diatur, dalam hal ini semua host (*)
   gateways:
-  - order-gateway
+  - order-gateway                          # Gateway yang digunakan, dalam hal ini order-gateway
   http:
   - match:
     - uri:
-        exact: /order
+        exact: /order                      # Pencocokan URI yang tepat, dalam hal ini /order
     route:
     - destination:
-        host: order-service
+        host: order-service                 # Host tujuan, dalam hal ini order-service
         port:
-          number: 3000
+          number: 3000                      # Nomor port tujuan, dalam hal ini port 3000
