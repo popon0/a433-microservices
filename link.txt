@@ -1,0 +1,7 @@
+### GitHub Packages
+
+#order-service
+ghcr.io/popon0/a433-microservices/order-service:latest
+
+#shipping-service
+ghcr.io/popon0/a433-microservices/shipping-service:latest
