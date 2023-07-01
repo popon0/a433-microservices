@@ -9,9 +9,11 @@ spec:
     - protocol: TCP
       port: 5673  # Port yang terpapar pada Service
       targetPort: 5672  # Port yang akan diarahkan ke Pod
+      name: rabbitmq-port  # Nama port pertama
     - protocol: TCP
       port: 15673  # Port yang terpapar pada Service
       targetPort: 15672  # Port yang akan diarahkan ke Pod
+      name: rabbitmq-management-port  # Nama port kedua
 ---
 apiVersion: apps/v1
 kind: Deployment
