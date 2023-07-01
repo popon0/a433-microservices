@@ -1,22 +1,55 @@
-apiVersion: apps/v1                           # Versi API yang digunakan untuk konfigurasi aplikasi Kubernetes
-kind: Deployment                              # Jenis objek, yaitu Deployment
+apiVersion: apps/v1
+# Jenis objek yang akan dibuat, yaitu Deployment
+kind: Deployment
+# Metadata untuk Deployment
 metadata:
-  name: order-service                         # Nama deployment, dapat diganti sesuai kebutuhan
+  # Nama Deployment, dapat diganti sesuai kebutuhan
+  name: order-service
+# Spesifikasi untuk Deployment
 spec:
-  replicas: 1                                 # Jumlah replika yang diinginkan, dalam hal ini 1
+  # Jumlah replika yang diinginkan, dalam hal ini 1
+  replicas: 1
+  # Selektor untuk memilih Pod dengan label 'app: order-service'
   selector:
     matchLabels:
-      app: order-service                       # Label yang digunakan untuk memilih pod, dalam hal ini app: order-service
+      app: order-service
+  # Template untuk Pod
   template:
     metadata:
+      # Label yang diberikan pada Pod, dalam hal ini app: order-service
       labels:
-        app: order-service                     # Label yang diberikan pada pod, dalam hal ini app: order-service
+        app: order-service
     spec:
+      # Kontainer dalam Pod
       containers:
-        - name: order-service                  # Nama kontainer, dalam hal ini order-service
-          image: ghcr.io/popon0/a433-microservices/order-service:latest   # Image yang digunakan untuk kontainer
+        - name: order-service
+          # Image yang digunakan untuk kontainer
+          image: ghcr.io/popon0/a433-microservices/order-service:latest
+          # Port yang digunakan dalam kontainer, dalam hal ini port 3000
           ports:
-            - containerPort: 3000               # Port yang digunakan dalam kontainer, dalam hal ini port 3000
+            - containerPort: 3000
+          # Variabel lingkungan AMQP_URL
           env:
-            - name: AMQP_URL                    # Variabel lingkungan AMQP_URL
-              value: amqp://reg:reg@10.108.186.167:5672   # Nilai variabel lingkungan AMQP_URL
+            - name: AMQP_URL
+              # Nilai variabel lingkungan AMQP_URL
+              value: amqp://reg:reg@10.108.186.167:5672
+---
+apiVersion: v1
+# Jenis objek yang akan dibuat, yaitu Service
+kind: Service
+# Metadata untuk Service
+metadata:
+  # Nama Service
+  name: order-service
+# Spesifikasi untuk Service
+spec:
+  # Selektor untuk memilih Pod dengan label 'app: order-service'
+  selector:
+    app: order-service
+  # Port yang akan diekspos oleh Service
+  ports:
+    - protocol: TCP
+      # Port yang terpapar pada Service
+      port: 3000
+      # Port yang akan diarahkan ke Pod
+      targetPort: 3000
