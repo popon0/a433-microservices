@@ -6,15 +6,16 @@ spec:
   selector:
     app: rabbitmq  # Selektor untuk menargetkan Pod dengan label 'app: rabbitmq'
   ports:
-    - protocol: TCP
+    - name: rabbitmq-port  # Nama port untuk RabbitMQ
+      protocol: TCP
       port: 5673  # Port yang terpapar pada Service
-      targetPort: 5672  # Port yang akan diarahkan ke Pod
-      name: rabbitmq-port  # Nama port pertama
-    - protocol: TCP
+      targetPort: 5672  # Port yang akan diarahkan ke Pod RabbitMQ
+    - name: management-port  # Nama port untuk RabbitMQ Management
+      protocol: TCP
       port: 15673  # Port yang terpapar pada Service
-      targetPort: 15672  # Port yang akan diarahkan ke Pod
-      name: rabbitmq-management-port  # Nama port kedua
----
+      targetPort: 15672  # Port yang akan diarahkan ke Pod RabbitMQ Management
+
+# Definisi Deployment RabbitMQ
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -33,17 +34,17 @@ spec:
         - name: rabbitmq  # Nama container
           image: rabbitmq:3.8-management-alpine  # Image yang akan digunakan
           ports:
-            - containerPort: 5672  # Port yang akan diterima oleh container
-            - containerPort: 15672  # Port yang akan diterima oleh container
+            - containerPort: 5672  # Port yang akan diterima oleh container RabbitMQ
+            - containerPort: 15672  # Port yang akan diterima oleh container RabbitMQ Management
           volumeMounts:
-            - name: data-volume  # Nama volumeMount
-              mountPath: /var/lib/rabbitmq/  # Path mount volume dalam container
-            - name: log-volume  # Nama volumeMount
-              mountPath: /var/log/rabbitmq  # Path mount volume dalam container
+            - name: data-volume  # Nama volumeMount untuk data
+              mountPath: /var/lib/rabbitmq/  # Path mount volume dalam container RabbitMQ
+            - name: log-volume  # Nama volumeMount untuk log
+              mountPath: /var/log/rabbitmq  # Path mount volume dalam container RabbitMQ
       volumes:
-        - name: data-volume  # Nama volume
+        - name: data-volume  # Nama volume untuk data
           hostPath:
-            path: ~/.docker-conf/rabbitmq/data/  # Path host untuk volume
-        - name: log-volume  # Nama volume
+            path: ~/.docker-conf/rabbitmq/data/  # Path host untuk volume data
+        - name: log-volume  # Nama volume untuk log
           hostPath:
-            path: ~/.docker-conf/rabbitmq/log/  # Path host untuk volume
+            path: ~/.docker-conf/rabbitmq/log/  # Path host untuk volume log
