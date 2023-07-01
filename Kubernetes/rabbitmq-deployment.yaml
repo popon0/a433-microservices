@@ -14,7 +14,7 @@ spec:
       protocol: TCP
       port: 15673  # Port yang terpapar pada Service
       targetPort: 15672  # Port yang akan diarahkan ke Pod RabbitMQ Management
-
+---
 # Definisi Deployment RabbitMQ
 apiVersion: apps/v1
 kind: Deployment
